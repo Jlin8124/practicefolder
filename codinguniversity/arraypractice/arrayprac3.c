@@ -53,16 +53,9 @@ void push(Vector* v, int new_value) {
     if (v->size == v->capacity) {
         int new_capacity = v->capacity * 2;
         int* new_data = realloc(v->data, sizeof(int) * new_capacity);
-
-        
-    }
-
     
-
-
-
+    }
 }
-
 
 
 int main(void) {
@@ -70,9 +63,6 @@ int main(void) {
     Vector* v = create_vector(32);
 
     printf("%d \n", v->capacity);
-
-
-
 
     return 0;
 }

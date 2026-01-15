@@ -67,6 +67,14 @@ void resize(string* v) {
     // 
 }
 
+void free_vector(string* v) {
+
+    free(v->data);
+    v->data = NULL;
+    free(v);
+    
+}
+
 int main(void) {
 
     string* my_vector = create_vector(32);
@@ -85,12 +93,10 @@ int main(void) {
 
     //okay so if I want to print out a specific character I have to use the * symbol
     // this derefences and gets the value at that address or point
-
-   
+    
+    free(my_vector);
 
     return 0; // always return after a int function return 0 is success
-
-
 }
 
 // mistakes changing it to || instead of && because if its a new line, or its EOF then its done
