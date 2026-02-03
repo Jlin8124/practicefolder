@@ -1,8 +1,10 @@
 __version__ = "0.1.0"
 
 import asyncio
-
 from asyncio import StreamReader, StreamWriter
+
+BACKEND_PORTS = [8081, 8082]
+CURRENT_PORT_INDEX = 0
 
 async def handle_connection(reader: StreamReader, writer: StreamWriter):
     #variable originally named addr but address is more clear
@@ -23,7 +25,15 @@ async def handle_connection(reader: StreamReader, writer: StreamWriter):
             return
         
         print(f" Forwarding {len(data)} byes to Backend...")
-        be_reader, be_writer = await asyncio.open_connection('127.0.0.1', 8081)
+
+        global CURRENT_PORT_INDEX
+        backend_port = BACKEND_PORTS[CURRENT_PORT_INDEX]
+
+        CURRENT_PORT_INDEX = (CURRENT_PORT_INDEX + 1) % len(BACKEND_PORTS)
+
+        print(f" Routing to Backend Port: {backend_port}")
+
+        be_reader, be_writer = await asyncio.open_connection('127.0.0.1', backend_port)
 
         be_writer.write(data)
         await be_writer.drain()

@@ -1,11 +1,16 @@
 import asyncio
+import sys
 
 async def handle_request(reader, writer):
 
-    data = await reader.read(4096)
-    print(f"Backend: Received a request!")
+    #so 'sockname' has {IP ADDRESS, PORT NUMBER}
+    port = writer.get_extra_info('sockname')[1]
 
-    body = "Hello! this message came from the BACKEND server (port 8081)."
+    data = await reader.read(4096)
+
+    print(f"Backend ({port}): Received a request!")
+
+    body = (f"Hello! this message came from the BACKEND port running on Port {port}.")
 
     #fixing bug of infinite loop, convert to bytes first
     body_bytes = body.encode('utf-8')
@@ -22,8 +27,13 @@ async def handle_request(reader, writer):
     writer.close()
 
 async def main():
-    server = await asyncio.start_server(handle_request, '127.0.0.1', 8081)
-    print(" Backend Server running on Port 8081...")
+
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    else:
+        port = 8081
+    server = await asyncio.start_server(handle_request, '127.0.0.1', port)
+    print(f" Backend Server running on Port {port}...")
     async with server:
         await server.serve_forever()
 

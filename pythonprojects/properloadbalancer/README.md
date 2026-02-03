@@ -7,6 +7,6 @@ I need to handle raw TCP if i want to learn more about how packets are moved.
 
 2. Should i use the raw socket library?
 
-Too low-level. I'd have to manually writ the event loop.
+Too low-level. I'd have to manually write the event loop.
 
 Unit Tests:
